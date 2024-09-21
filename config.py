@@ -1,5 +1,5 @@
 class Config:
-    SECRET_KEY = 'your_secret_key'
+    SECRET_KEY = 'SUPERDIFICIL'
     
     # Configurações do banco de dados MySQL
     MYSQL_HOST = 'localhost'

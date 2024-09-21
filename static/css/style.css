@@ -1,9 +1,10 @@
 body {
     font-family: Arial, sans-serif;
+    background-color: bisque;
 }
 
 header {
-    background-color: #f8f9fa;
+    background-color: gray;
     padding: 10px;
 }
 
@@ -11,8 +12,21 @@ nav a {
     margin: 0 10px;
     text-decoration: none;
     color: #333;
+    color: white;
 }
 
 main {
     padding: 20px;
+}
+
+.success { 
+    color: green; 
+}
+
+.error { 
+    color: red; 
+}
+
+.warning { 
+    color: orange; 
 }
