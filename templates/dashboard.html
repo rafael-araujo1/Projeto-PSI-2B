@@ -8,12 +8,14 @@
     <tr>
         <th>Título</th>
         <th>Descrição</th>
+        <th>Categoria</th> <!-- Nova coluna para Categoria -->
         <th>Ação</th>
     </tr>
     {% for task in tasks %}
     <tr>
-        <td>{{ task[2] }}</td> <!-- Título -->
-        <td>{{ task[3] }}</td> <!-- Descrição -->
+        <td>{{ task[1] }}</td> <!-- Título -->
+        <td>{{ task[2] }}</td> <!-- Descrição -->
+        <td>{{ task[3] }}</td> <!-- Categoria -->
         <td>
             <form action="{{ url_for('delete_task', task_id=task[0]) }}" method="POST">
                 <button type="submit">Excluir</button>

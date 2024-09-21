@@ -178,3 +178,8 @@ main {
 .warning { 
     color: orange; 
 }
+
+input, textarea, option, select, button {
+    color: black;
+    outline: none;
+}

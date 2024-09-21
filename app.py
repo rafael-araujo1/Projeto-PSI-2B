@@ -37,7 +37,6 @@ def home():
     return render_template('index.html')
 
 # Rota de registro
-from flask_mail import Message
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -65,7 +64,7 @@ def register():
             msg.body = 'Seu cadastro foi realizado com sucesso!'
             mail.send(msg)
 
-            flash('Registro realizado com sucesso! Você pode fazer login agora.')
+            flash('Registro realizado com sucesso! Você pode fazer login agora.','info')
             return redirect(url_for('login'))
         except IntegrityError:
             mysql.connection.rollback()
@@ -105,30 +104,51 @@ def login():
 @app.route('/dashboard')
 @login_required
 def dashboard():
+    users_id = session['users_id']
     cur = mysql.connection.cursor()
-    cur.execute("SELECT * FROM Task WHERE users_id = %s", [session['users_id']])
+
+    # Alteração na query para buscar o nome da categoria junto com as tarefas
+    cur.execute("""
+        SELECT Task.id, Task.title, Task.description, Category.name 
+        FROM Task 
+        JOIN Category ON Task.category_id = Category.id
+        WHERE Task.users_id = %s
+    """, (users_id,))
     tasks = cur.fetchall()
     cur.close()
+
     return render_template('dashboard.html', tasks=tasks)
+
 
 # Rota para adicionar tarefa
 @app.route('/add_task', methods=['GET', 'POST'])
 @login_required
 def add_task():
+    # Busca as categorias no banco de dados para exibir no select
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT id, name FROM Category")
+    categories = cur.fetchall()
+    cur.close()
+
     if request.method == 'POST':
         title = request.form['title']
         description = request.form['description']
+        category_id = request.form['category_id']  # Obtém o ID da categoria selecionada
         users_id = session['users_id']
 
+        # Inserir a tarefa com a categoria selecionada
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO Task (users_id, title, description) VALUES (%s, %s, %s)", (users_id, title, description))
+        cur.execute("INSERT INTO Task (users_id, title, description, category_id) VALUES (%s, %s, %s, %s)",
+                    (users_id, title, description, category_id))
         mysql.connection.commit()
         cur.close()
 
         flash('Tarefa adicionada com sucesso!', 'success')
         return redirect(url_for('dashboard'))
 
-    return render_template('add_task.html')
+    # Passa as categorias para o template
+    return render_template('add_task.html', categories=categories)
+
 
 # Rota para excluir tarefa
 @app.route('/delete_task/<int:task_id>', methods=['POST'])

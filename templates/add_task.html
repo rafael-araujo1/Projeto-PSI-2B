@@ -6,9 +6,18 @@
 <form method="POST">
     <label for="title">Título:</label>
     <input type="text" id="title" name="title" required>
-    
+
     <label for="description">Descrição:</label>
     <textarea id="description" name="description"></textarea>
+
+    <!-- Select para as Categorias com valores fixos -->
+    <label for="category">Categoria:</label>
+    <select id="category" name="category_id" required>
+        <option value="" disabled selected>Escolha uma categoria</option>
+        <option value="1">Trabalho</option>
+        <option value="2">Pessoal</option>
+        <option value="3">Estudo</option>
+    </select>
 
     <button type="submit">Adicionar Tarefa</button>
 </form>
