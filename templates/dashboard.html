@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Painel de Controle{% endblock %}
+
+{% block content %}
+<h2>Minhas Tarefas</h2>
+
+<table>
+    <tr>
+        <th>Título</th>
+        <th>Descrição</th>
+        <th>Ação</th>
+    </tr>
+    {% for task in tasks %}
+    <tr>
+        <td>{{ task[2] }}</td> <!-- Título -->
+        <td>{{ task[3] }}</td> <!-- Descrição -->
+        <td>
+            <form action="{{ url_for('delete_task', task_id=task[0]) }}" method="POST">
+                <button type="submit">Excluir</button>
+            </form>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+<a href="{{ url_for('add_task') }}">Adicionar nova tarefa</a>
+{% endblock %}

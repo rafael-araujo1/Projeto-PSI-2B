@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>Gerenciador de Tarefas</title>
+</head>
+<body>
+    <header>
+        <h1>Bem-vindo ao Gerenciador de Tarefas!</h1>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('login') }}">Login</a></li>
+                <li><a href="{{ url_for('register') }}">Cadastrar</a></li>
+                <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section>
+            <h2>Minhas Tarefas</h2>
+            <p>Gerencie suas tarefas de forma fácil e eficiente.</p>
+            <a href="{{ url_for('add_task') }}">Adicionar nova tarefa</a>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Gerenciador de Tarefas</p>
+    </footer>
+</body>
+</html>
