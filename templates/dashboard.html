@@ -2,9 +2,9 @@
 {% block title %}Painel de Controle{% endblock %}
 
 {% block content %}
-<h2>Minhas Tarefas</h2>
+<h2 class="add_task-h2">Minhas Tarefas</h2>
 
-<table>
+<table class="table-tasks">
     <tr>
         <th>Título</th>
         <th>Descrição</th>
@@ -25,5 +25,5 @@
     {% endfor %}
 </table>
 
-<a href="{{ url_for('add_task') }}">Adicionar nova tarefa</a>
+<a href="{{ url_for('add_task') }}" id="add_task-btn">Adicionar nova tarefa</a>
 {% endblock %}

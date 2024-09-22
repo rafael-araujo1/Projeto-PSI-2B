@@ -2,13 +2,13 @@
 {% block title %}Adicionar Tarefa{% endblock %}
 
 {% block content %}
-<h2>Adicionar Nova Tarefa</h2>
-<form method="POST">
+<h2 class="h2-add_task">Adicionar Nova Tarefa</h2>
+<form method="POST" class="form-add_task">
     <label for="title">Título:</label>
     <input type="text" id="title" name="title" required>
 
     <label for="description">Descrição:</label>
-    <textarea id="description" name="description"></textarea>
+    <textarea id="description" name="description" class="task-description"></textarea>
 
     <!-- Select para as Categorias com valores fixos -->
     <label for="category">Categoria:</label>

@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
-    const links = document.querySelectorAll('nav .header-btn');
+    const links = document.querySelectorAll("nav .header-btn");
     const currentUrl = window.location.pathname;
 
     links.forEach(link => {
@@ -9,3 +9,11 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 });
+
+const flashMessage = document.getElementById("flash");
+if (flashMessage) {
+    flashMessage.style.display = 'block'; // Mostrar a mensagem
+    setTimeout(() => {
+        flashMessage.style.display = 'none';
+    }, 3000);
+}
