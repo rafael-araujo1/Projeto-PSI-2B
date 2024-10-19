@@ -26,7 +26,7 @@ def login_required(f):
 # Função para verificar se o e-mail já está em uso
 def is_email_taken(email):
     cursor = mysql.connection.cursor()
-    cursor.execute("SELECT * FROM users WHERE email = %s", (email,))
+    cursor.execute("SELECT * FROM tb_users WHERE use_email = %s", (email,))
     result = cursor.fetchone()
     cursor.close()
     return result is not None
@@ -55,7 +55,7 @@ def register():
         # Tente inserir o novo usuário
         try:
             cursor = mysql.connection.cursor()
-            cursor.execute("INSERT INTO users (email, password) VALUES (%s, %s)", (email, hashed_password))
+            cursor.execute("INSERT INTO tb_users (use_email, use_password) VALUES (%s, %s)", (email, hashed_password))
             mysql.connection.commit()
 
             # Enviar e-mail após o registro
@@ -86,7 +86,7 @@ def login():
         
         # Buscar o usuário no banco de dados
         cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM users WHERE email = %s", [email])
+        cur.execute("SELECT * FROM tb_users WHERE use_email = %s", [email])
         user = cur.fetchone()
         cur.close()
 
@@ -109,10 +109,10 @@ def dashboard():
 
     # Alteração na query para buscar o nome da categoria junto com as tarefas
     cur.execute("""
-        SELECT Task.id, Task.title, Task.description, Category.name 
-        FROM Task 
-        JOIN Category ON Task.category_id = Category.id
-        WHERE Task.users_id = %s
+        SELECT tas_id, tas_title, tas_description, cat_name 
+        FROM tb_task 
+        JOIN tb_category ON tas_cat_id = cat_id
+        WHERE tas_use_id = %s
     """, (users_id,))
     tasks = cur.fetchall()
     cur.close()
@@ -126,7 +126,7 @@ def dashboard():
 def add_task():
     # Busca as categorias no banco de dados para exibir no select
     cur = mysql.connection.cursor()
-    cur.execute("SELECT id, name FROM Category")
+    cur.execute("SELECT cat_id, cat_name FROM tb_category")
     categories = cur.fetchall()
     cur.close()
 
@@ -138,7 +138,7 @@ def add_task():
 
         # Inserir a tarefa com a categoria selecionada
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO Task (users_id, title, description, category_id) VALUES (%s, %s, %s, %s)",
+        cur.execute("INSERT INTO tb_task (tas_use_id, tas_title, tas_description, tas_cat_id) VALUES (%s, %s, %s, %s)",
                     (users_id, title, description, category_id))
         mysql.connection.commit()
         cur.close()
@@ -155,7 +155,7 @@ def add_task():
 @login_required
 def delete_task(task_id):
     cur = mysql.connection.cursor()
-    cur.execute("DELETE FROM Task WHERE id = %s AND users_id = %s", (task_id, session['users_id']))
+    cur.execute("DELETE FROM tb_task WHERE tas_id = %s AND tas_use_id = %s", (task_id, session['users_id']))
     mysql.connection.commit()
     cur.close()
 
