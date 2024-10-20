@@ -10,13 +10,23 @@
     <label for="description">Descrição:</label>
     <textarea id="description" name="description" class="task-description"></textarea>
 
-    <!-- Select para as Categorias com valores fixos -->
-    <label for="category">Categoria:</label>
-    <select id="category" name="category_id" required>
+    <label for="data-limite">Data Limite:</label>
+    <input type="datetime-local" name="data-limite" required>
+
+    <label for="categoria">Categoria:</label>
+    <select id="categoria" name="categoria" required>
         <option value="" disabled selected>Escolha uma categoria</option>
-        <option value="1">Trabalho</option>
-        <option value="2">Pessoal</option>
-        <option value="3">Estudo</option>
+        <option value="Trabalho">Trabalho</option>
+        <option value="Pessoal">Pessoal</option>
+        <option value="Estudo">Estudo</option>
+    </select>
+
+    <label for="Prioridade">Prioridade:</label>
+    <select id="prioridade" name="prioridade" id="prioridade" required>
+        <option value="" disabled selected>Escolha um nível</option>
+        <option value="baixa">Baixa</option>
+        <option value="média">Média</option>
+        <option value="alta">Alta</option>
     </select>
 
     <button type="submit">Adicionar Tarefa</button>

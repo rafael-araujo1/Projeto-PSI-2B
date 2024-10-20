@@ -41,6 +41,7 @@ def home():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
+        username = request.form["username"]
         email = request.form['email']
         password = request.form['password']
 
@@ -55,7 +56,7 @@ def register():
         # Tente inserir o novo usuário
         try:
             cursor = mysql.connection.cursor()
-            cursor.execute("INSERT INTO tb_users (use_email, use_password) VALUES (%s, %s)", (email, hashed_password))
+            cursor.execute("INSERT INTO tb_users (use_username, use_email, use_password) VALUES (%s, %s, %s)", (username, email, hashed_password))
             mysql.connection.commit()
 
             # Enviar e-mail após o registro
@@ -107,11 +108,8 @@ def dashboard():
     users_id = session['users_id']
     cur = mysql.connection.cursor()
 
-    # Alteração na query para buscar o nome da categoria junto com as tarefas
     cur.execute("""
-        SELECT tas_id, tas_title, tas_description, cat_name 
-        FROM tb_task 
-        JOIN tb_category ON tas_cat_id = cat_id
+        SELECT tas_id, tas_title, tas_description, tas_categoria from tb_task
         WHERE tas_use_id = %s
     """, (users_id,))
     tasks = cur.fetchall()
@@ -124,22 +122,19 @@ def dashboard():
 @app.route('/add_task', methods=['GET', 'POST'])
 @login_required
 def add_task():
-    # Busca as categorias no banco de dados para exibir no select
-    cur = mysql.connection.cursor()
-    cur.execute("SELECT cat_id, cat_name FROM tb_category")
-    categories = cur.fetchall()
-    cur.close()
 
     if request.method == 'POST':
         title = request.form['title']
         description = request.form['description']
-        category_id = request.form['category_id']  # Obtém o ID da categoria selecionada
+        data_limite = request.form["data-limite"].replace("T", " ")
+        categoria = request.form['categoria']
+        prioridade = request.form["prioridade"]
         users_id = session['users_id']
 
         # Inserir a tarefa com a categoria selecionada
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO tb_task (tas_use_id, tas_title, tas_description, tas_cat_id) VALUES (%s, %s, %s, %s)",
-                    (users_id, title, description, category_id))
+        cur.execute("INSERT INTO tb_task (tas_use_id, tas_title, tas_description, tas_data_limite, tas_categoria, tas_prioridade) VALUES (%s, %s, %s, %s, %s, %s)",
+                    (users_id, title, description, data_limite, categoria, prioridade))
         mysql.connection.commit()
         cur.close()
 
@@ -147,7 +142,7 @@ def add_task():
         return redirect(url_for('dashboard'))
 
     # Passa as categorias para o template
-    return render_template('add_task.html', categories=categories)
+    return render_template('add_task.html')
 
 
 # Rota para excluir tarefa
