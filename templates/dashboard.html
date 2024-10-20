@@ -3,27 +3,21 @@
 
 {% block content %}
 <h2 class="add_task-h2">Minhas Tarefas</h2>
-
-<table class="table-tasks">
-    <tr>
-        <th>Título</th>
-        <th>Descrição</th>
-        <th>Categoria</th> <!-- Nova coluna para Categoria -->
-        <th>Ação</th>
-    </tr>
-    {% for task in tasks %}
-    <tr>
-        <td>{{ task[1] }}</td> <!-- Título -->
-        <td>{{ task[2] }}</td> <!-- Descrição -->
-        <td>{{ task[3] }}</td> <!-- Categoria -->
-        <td>
-            <form action="{{ url_for('delete_task', task_id=task[0]) }}" method="POST">
-                <button type="submit">Excluir</button>
-            </form>
-        </td>
-    </tr>
-    {% endfor %}
-</table>
-
 <a href="{{ url_for('add_task') }}" id="add_task-btn">Adicionar nova tarefa</a>
+
+{% for task in tasks %}
+<div id="task" style="border: 1px solid wheat;">
+    <p><b>Título:</b> {{task[1]}} </p>
+    <p><b>Descrição:</b> {{task[2]}} </p>
+    <p><b>Categoria:</b> {{task[3]}} </p>
+    <p><b>Status:</b> {{task[4]}} </p>
+    <p><b>Prioridade:</b> {{task[5]}} </p>
+    <p><b>Início:</b> {{task[6]}} </p>
+    <p><b>Data Limite:</b> {{task[7]}} </p>
+    <form action="{{ url_for('delete_task', task_id=task[0]) }}" method="POST">
+        <button type="submit">Excluir</button>
+    </form>
+</div>
+{% endfor %}
+
 {% endblock %}

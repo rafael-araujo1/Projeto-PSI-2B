@@ -4,6 +4,7 @@ from MySQLdb import IntegrityError
 from flask_bcrypt import Bcrypt
 from flask_mail import Mail, Message
 from functools import wraps
+from datetime import datetime
 
 app = Flask(__name__)
 app.config.from_object('config.Config')
@@ -105,11 +106,11 @@ def login():
 @app.route('/dashboard')
 @login_required
 def dashboard():
-    users_id = session['users_id']
+    users_id = int(session['users_id'])
     cur = mysql.connection.cursor()
 
     cur.execute("""
-        SELECT tas_id, tas_title, tas_description, tas_categoria from tb_task
+        SELECT tas_id, tas_title, tas_description, tas_categoria, tas_status, tas_prioridade, tas_created_at, tas_data_limite from tb_task
         WHERE tas_use_id = %s
     """, (users_id,))
     tasks = cur.fetchall()
@@ -128,13 +129,21 @@ def add_task():
         description = request.form['description']
         data_limite = request.form["data-limite"].replace("T", " ")
         categoria = request.form['categoria']
+        status = ''
         prioridade = request.form["prioridade"]
         users_id = session['users_id']
 
+        data_limiteAux = datetime.strptime(data_limite, "%Y-%m-%d %H:%M")
+        
+        if data_limiteAux < datetime.now():
+            status = "Pendente"
+        else:
+            status = "Em andamento"
+
         # Inserir a tarefa com a categoria selecionada
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO tb_task (tas_use_id, tas_title, tas_description, tas_data_limite, tas_categoria, tas_prioridade) VALUES (%s, %s, %s, %s, %s, %s)",
-                    (users_id, title, description, data_limite, categoria, prioridade))
+        cur.execute("INSERT INTO tb_task (tas_use_id, tas_title, tas_description, tas_data_limite, tas_categoria, tas_status, tas_prioridade) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+                    (users_id, title, description, data_limite, categoria, status, prioridade))
         mysql.connection.commit()
         cur.close()
 
