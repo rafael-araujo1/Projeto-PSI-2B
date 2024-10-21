@@ -29,14 +29,21 @@ document.getElementById('toggleFiltros').addEventListener('click', function() {
     }
 })
 
-document.getElementById('toggleEdit').addEventListener('click', function() {
-    const modal = document.getElementById('editTask');
-    const body = document.querySelector('body')
-    if (modal.style.display === 'none' || modal.style.display === '') {
-        modal.style.display = 'flex';
-        // modal.style.filter = "none";
-        // body.classList.add('blur')
-    } else {
-        formulario.style.display = 'none';
-    }
-})
+document.querySelectorAll('[id^=toggleEdit]').forEach(button => {
+    button.addEventListener('click', function() {
+        const taskId = this.id.split('-')[1];
+        const editDiv = document.getElementById(`editTask-${taskId}`);
+        if (editDiv.style.display === 'none') {
+            editDiv.style.display = 'flex';
+        } else {
+            editDiv.style.display = 'none';
+        }
+    });
+});
+
+document.querySelectorAll('.closeModal').forEach(button => {
+    button.addEventListener('click', function() {
+        const editDiv = this.closest('div');
+        editDiv.style.display = 'none';
+    });
+});

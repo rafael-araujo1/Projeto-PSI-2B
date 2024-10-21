@@ -340,13 +340,13 @@ nav {
     transition-duration: 0.5s;
 }
 
-#toggleEdit {
+.modalBtn {
     border: 0;
     background-color: #2e2d2d;
     margin-left: 12vw;
 }
 
-#editTask {
+.editDiv {
     display: none;
     flex-direction: column; /* Alinhar os itens verticalmente */
     width: 50vw; /* Ajuste da largura para ficar centralizado */
@@ -365,14 +365,29 @@ nav {
     filter: blur(5px);
 }
 
-#editTask h3 {
+.editDiv h3 {
     font-size: 30px; /* Ajuste de tamanho */
     width: 100%;
     text-align: center; /* Centralizar o título */
     margin-bottom: 20px; /* Adicionar espaço abaixo do título */
 }
 
-#editTask label {
+.closeModal {
+    background: none;
+    border: none;
+    font-weight: bold;
+    width: 4vw;
+    height: 6vh;
+    border-radius: 14px;
+    background-color: #4d6f8c;
+    color: white;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    cursor: pointer;
+}
+
+.editDiv label {
     font-size: 18px; /* Reduzir um pouco o tamanho da fonte */
     margin-bottom: 10px; /* Espaçamento entre label e input */
 }
@@ -396,7 +411,7 @@ nav {
     height: 50px;
 }
 
-#editTask button {
+#editBtn {
     width: 30%;
     font-size: 20px;
     border-radius: 10px;
@@ -407,7 +422,7 @@ nav {
     cursor: pointer;
 }
 
-#editTask button:hover {
+.editDiv button:hover {
     background-color: #52d6e4;
     transition-duration: 0.5s;
 }

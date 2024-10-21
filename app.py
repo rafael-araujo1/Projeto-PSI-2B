@@ -159,7 +159,7 @@ def dashboard():
         filtros.append("tas_description LIKE %s")
         parametros.append(f"%{descricao}%")  # Usando o % para fazer a busca por substring
 
-    # Construção da consulta
+    # SELECT DA CONSULTA
     consulta = """
         SELECT tas_id, tas_title, tas_description, tas_categoria, tas_status, tas_prioridade, tas_data_inicial, tas_data_limite 
         FROM tb_task 
@@ -252,6 +252,7 @@ def editar_task(task_id):
         mysql.connection.commit()
         cur.close()
 
+        flash('Tarefa editada com sucesso!', 'success')
         return redirect(url_for("dashboard"))
 
 # Rota para logout

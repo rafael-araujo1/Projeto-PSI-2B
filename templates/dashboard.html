@@ -70,16 +70,18 @@
     <form action="{{ url_for('concluir_task', task_id=task[0]) }}" method="POST" id="ConcluirTaskForm">
         <button type="submit" id="concluirTask"><u>Marcar como concluída</u> &#9989;</button>
     </form>
-    <button id="toggleEdit" type="submit"><img src="{{ url_for('static', filename='images/edit-icon.png') }}" alt=""></button>
+    <button id="toggleEdit-{{task[0]}}" class="modalBtn" type="button">
+        <img src="{{ url_for('static', filename='images/edit-icon.png') }}" alt="">
+    </button>
     <form action="{{ url_for('delete_task', task_id=task[0]) }}" method="POST">
         <button type="submit" id="deleteTask"><img src="{{url_for('static', filename='images/trash-icon.png') }}" alt="ícone de lixeira"></button>
     </form>
 </div>
 
-<div id="editTask">
+<div id="editTask-{{task[0]}}" class="editDiv" style="display: none;">
     <form action="{{ url_for('editar_task', task_id=task[0]) }}" method="POST" class="form-edit">
         <h3>Editar Tarefa</h3>
-
+        <button type="button" class="closeModal" id="closeEdit-{{task[0]}}">&times;</button>
         <label for="editDescricao">Editar descrição:</label>
         <textarea name="editDescricao" id="editDescricao" style="resize: none;" required></textarea>
 
@@ -94,8 +96,7 @@
         <label for="editPrazo">Editar prazo: </label>
         <input type="datetime-local" name="editPrazo" id="editPrazo" required>
 
-        
-        <button type="submit">EDITAR</button>
+        <button type="submit" id="editBtn">EDITAR</button>
     </form>
 </div>
 {% endfor %}
