@@ -12,5 +12,5 @@ class Config:
     MAIL_PORT = 587
     MAIL_USE_TLS = True
     MAIL_USERNAME = 'dtuberscaicogo@gmail.com' 
-    MAIL_PASSWORD = ''
+    MAIL_PASSWORD = 'senha'
     MAIL_DEFAULT_SENDER = 'dtuberscaicogo@gmail.com'

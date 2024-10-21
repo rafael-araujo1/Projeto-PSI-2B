@@ -21,10 +21,22 @@ if (flashMessage) {
 document.getElementById('toggleFiltros').addEventListener('click', function() {
     const formulario = document.getElementById('formFiltros');
     if (formulario.style.display === 'none' || formulario.style.display === '') {
-        formulario.style.display = 'block'; // Exibe o formulário
-        this.textContent = 'Esconder Filtros'; // Altera o texto do botão
+        formulario.style.display = 'block';
+        this.textContent = 'Esconder Filtros';
     } else {
-        formulario.style.display = 'none'; // Esconde o formulário
-        this.textContent = 'Mostrar Filtros'; // Altera o texto do botão
+        formulario.style.display = 'none'; 
+        this.textContent = 'Mostrar Filtros';
+    }
+})
+
+document.getElementById('toggleEdit').addEventListener('click', function() {
+    const modal = document.getElementById('editTask');
+    const body = document.querySelector('body')
+    if (modal.style.display === 'none' || modal.style.display === '') {
+        modal.style.display = 'flex';
+        // modal.style.filter = "none";
+        // body.classList.add('blur')
+    } else {
+        formulario.style.display = 'none';
     }
 })

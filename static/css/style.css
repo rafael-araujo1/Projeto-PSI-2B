@@ -340,10 +340,85 @@ nav {
     transition-duration: 0.5s;
 }
 
+#toggleEdit {
+    border: 0;
+    background-color: #2e2d2d;
+    margin-left: 12vw;
+}
+
+#editTask {
+    display: none;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 60vw;
+    padding: 2%;
+    background-color: #2e2d2d;
+    border-radius: 25px;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    margin: 15% 20%;
+    box-shadow: 5px 5px 10px 5px rgba(0, 0, 0, 0.3);
+    filter: none;
+}
+
+.blur {
+    filter: blur(5px);
+}
+
+#editTask h3 {
+    font-size: 40px;
+    width: 100%;
+}
+
+#editTask label {
+    font-size: 22px;
+}
+
+#editDescricao, #editPrazo {
+    background-color: #2e2d2d;
+    color: white;
+    font-size: 20px;
+    width: 40%;
+    height: 5vh;
+    margin-left: 1%;
+}
+
+#editDescricao {
+    width: 60%;
+    height: 15vh;
+    margin-right: 6%;
+    margin-bottom: 2%;
+}
+
+#editStatus {
+    background-color: #2e2d2d;
+    color: white;
+    margin: 0 50% 2% 1%;
+    font-size: 20px;
+    width: 30%;
+    height: 5vh;
+}
+
+#editTask button {
+    width: 10vw;
+    font-size: 25px;
+    border-radius: 15px;
+    border: 0;
+    background-color: #4d6f8c;
+    margin-left: 15vw;
+}
+
+#editTask button:hover {
+    background-color: #52d6e4;
+    transition-duration: 0.5s; 
+}
+
 #deleteTask {
     background-color: #2e2d2d;
     border: 0;
-    margin-left: 22vw;
+    margin-left: 2vw;
 }
 
 #task img {

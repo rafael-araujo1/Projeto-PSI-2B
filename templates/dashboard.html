@@ -68,10 +68,34 @@
     <p><b>Início:</b> {{task[6]}} </p>
     <p><b>Data Limite:</b> {{task[7]}} </p>
     <form action="{{ url_for('concluir_task', task_id=task[0]) }}" method="POST" id="ConcluirTaskForm">
-        <button type="submit" id="concluirTask"><u>Marcar como concluída</u>&#9989;</button>
+        <button type="submit" id="concluirTask"><u>Marcar como concluída</u> &#9989;</button>
     </form>
+    <button id="toggleEdit" type="submit"><img src="{{ url_for('static', filename='images/edit-icon.png') }}" alt=""></button>
     <form action="{{ url_for('delete_task', task_id=task[0]) }}" method="POST">
         <button type="submit" id="deleteTask"><img src="{{url_for('static', filename='images/trash-icon.png') }}" alt="ícone de lixeira"></button>
+    </form>
+</div>
+
+<div id="editTask">
+    <form action="{{ url_for('editar_task', task_id=task[0]) }}" method="POST">
+        <h3>Editar Tarefa</h3>
+
+        <label for="editDescricao">Editar descrição:</label>
+        <textarea name="editDescricao" id="editDescricao" style="resize: none;" required></textarea>
+
+        <label for="editStatus">Editar status: </label>
+        <select name="editStatus" id="editStatus" required>
+            <option value="" disabled selected>Escolha um nível</option>
+            <option value="Concluída">Concluída</option>
+            <option value="Em andamento">Em andamento</option>
+            <option value="Pendente">Pendente</option>
+        </select>
+
+        <label for="editPrazo">Editar prazo: </label>
+        <input type="datetime-local" name="editPrazo" id="editPrazo" required>
+
+        
+        <button type="submit">EDITAR</button>
     </form>
 </div>
 {% endfor %}

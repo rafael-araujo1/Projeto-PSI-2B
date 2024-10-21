@@ -174,7 +174,9 @@ def dashboard():
     tasks = cur.fetchall()
     cur.close()
 
+
     return render_template('dashboard.html', tasks=tasks)
+
 
 
 # Rota para adicionar tarefa
@@ -236,6 +238,21 @@ def concluir_task(task_id):
 
     flash('Tarefa concluída com sucesso!', 'success')
     return redirect(url_for('dashboard'))
+
+@app.route("/editar_task/<int:task_id>", methods=["POST"])
+@login_required
+def editar_task(task_id):
+    if request.method == "POST":
+        nova_descricao = request.form["editDescricao"]
+        novo_status = request.form["editStatus"]
+        novo_prazo = request.form["editPrazo"].replace("T", " ")
+
+        cur = mysql.connection.cursor()
+        cur.execute("UPDATE tb_task SET tas_description = %s, tas_status = %s, tas_data_limite = %s WHERE tas_id = %s AND tas_use_id = %s", (nova_descricao, novo_status, novo_prazo, task_id, session['users_id']))
+        mysql.connection.commit()
+        cur.close()
+
+        return redirect(url_for("dashboard"))
 
 # Rota para logout
 @app.route('/logout')
