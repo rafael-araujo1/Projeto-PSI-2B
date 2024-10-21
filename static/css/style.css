@@ -348,19 +348,17 @@ nav {
 
 #editTask {
     display: none;
-    flex-direction: row;
-    flex-wrap: wrap;
-    width: 60vw;
+    flex-direction: column; /* Alinhar os itens verticalmente */
+    width: 50vw; /* Ajuste da largura para ficar centralizado */
     padding: 2%;
     background-color: #2e2d2d;
     border-radius: 25px;
     position: fixed;
     z-index: 1;
-    left: 0;
-    top: 0;
-    margin: 15% 20%;
+    left: 50%; /* Centralizar horizontalmente */
+    top: 50%; /* Centralizar verticalmente */
+    transform: translate(-50%, -50%); /* Ajuste para centralização */
     box-shadow: 5px 5px 10px 5px rgba(0, 0, 0, 0.3);
-    filter: none;
 }
 
 .blur {
@@ -368,51 +366,50 @@ nav {
 }
 
 #editTask h3 {
-    font-size: 40px;
+    font-size: 30px; /* Ajuste de tamanho */
     width: 100%;
+    text-align: center; /* Centralizar o título */
+    margin-bottom: 20px; /* Adicionar espaço abaixo do título */
 }
 
 #editTask label {
-    font-size: 22px;
+    font-size: 18px; /* Reduzir um pouco o tamanho da fonte */
+    margin-bottom: 10px; /* Espaçamento entre label e input */
 }
 
-#editDescricao, #editPrazo {
+#editDescricao, #editPrazo, #editStatus {
     background-color: #2e2d2d;
     color: white;
-    font-size: 20px;
-    width: 40%;
-    height: 5vh;
-    margin-left: 1%;
+    font-size: 18px;
+    width: 100%;
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid white;
 }
 
 #editDescricao {
-    width: 60%;
-    height: 15vh;
-    margin-right: 6%;
-    margin-bottom: 2%;
+    height: 100px;
 }
 
 #editStatus {
-    background-color: #2e2d2d;
-    color: white;
-    margin: 0 50% 2% 1%;
-    font-size: 20px;
-    width: 30%;
-    height: 5vh;
+    height: 50px;
 }
 
 #editTask button {
-    width: 10vw;
-    font-size: 25px;
-    border-radius: 15px;
+    width: 30%;
+    font-size: 20px;
+    border-radius: 10px;
     border: 0;
     background-color: #4d6f8c;
-    margin-left: 15vw;
+    margin: 20px auto;
+    padding: 10px 0;
+    cursor: pointer;
 }
 
 #editTask button:hover {
     background-color: #52d6e4;
-    transition-duration: 0.5s; 
+    transition-duration: 0.5s;
 }
 
 #deleteTask {
