@@ -5,19 +5,74 @@
 <h2 class="add_task-h2">Minhas Tarefas</h2>
 <a href="{{ url_for('add_task') }}" id="add_task-btn">Adicionar nova tarefa</a>
 
+<button id="toggleFiltros">Mostrar Filtros</button>
+
+<form method="GET" action="{{ url_for('dashboard') }}" id="formFiltros">
+    <!-- Status -->
+    <label for="status">Filtrar por Status:</label>
+    <select name="status" id="filtro-status">
+        <option value="">Todos</option>
+        <option value="Concluída">Concluída</option>
+        <option value="Em andamento">Em andamento</option>
+        <option value="Pendente">Pendente</option>
+    </select>
+    <br>
+
+    <!-- Data de Criação -->
+    <label for="filtro-criacao">Filtrar por Data de Início:</label>
+    <input type="datetime-local" name="criadoI" id="filtro-criacaoI">
+    <input type="datetime-local" name="criadoF" id="filtro-criacaoF">
+    <br>
+
+    <!-- Filtrar por Data Limite (Prazo) -->
+    <label for="filtro-limite">Filtrar por Prazo:</label>
+    <input type="datetime-local" name="limiteI" id="filtro-limiteI">
+    <input type="datetime-local" name="limiteF" id="filtro-limiteF">
+    <br>
+
+    <!-- Filtrar por Prioridade -->
+    <label for="filtro-prioridade">Filtrar por Prioridade:</label>
+    <select name="prioridade" id="filtro-prioridade">
+        <option value="">Todas</option>
+        <option value="alta">Alta</option>
+        <option value="média">Média</option>
+        <option value="baixa">Baixa</option>
+    </select>
+    <br>
+
+    <!-- Filtrar por Categoria -->
+    <label for="filtro-categoria">Filtrar por Categoria:</label>
+    <select name="categoria" id="filtro-categoria">
+        <option value="">Todas</option>
+        <option value="Trabalho">Trabalho</option>
+        <option value="Pessoal">Pessoal</option>
+        <option value="Estudo">Estudo</option>
+    </select>
+    <br>
+
+    <!-- Busca por Palavras-chave na Descrição -->
+    <label for="buscar-descricao">Buscar por Descrição:</label>
+    <input type="text" name="descricao" id="buscar-descricao" placeholder="Digite alguma coisa">
+
+    <!-- Botão de Filtrar -->
+    <button type="submit">Filtrar</button>
+</form>
+
 {% for task in tasks %}
-<div id="task" style="border: 1px solid wheat;">
-    <p><b>Título:</b> {{task[1]}} </p>
+<div id="task">
+    <p class="titulo"><b>{{task[1]}}</b></p>
     <p><b>Descrição:</b> {{task[2]}} </p>
     <p><b>Categoria:</b> {{task[3]}} </p>
     <p><b>Status:</b> {{task[4]}} </p>
     <p><b>Prioridade:</b> {{task[5]}} </p>
     <p><b>Início:</b> {{task[6]}} </p>
     <p><b>Data Limite:</b> {{task[7]}} </p>
+    <form action="{{ url_for('concluir_task', task_id=task[0]) }}" method="POST" id="ConcluirTaskForm">
+        <button type="submit" id="concluirTask"><u>Marcar como concluída</u>&#9989;</button>
+    </form>
     <form action="{{ url_for('delete_task', task_id=task[0]) }}" method="POST">
-        <button type="submit">Excluir</button>
+        <button type="submit" id="deleteTask"><img src="{{url_for('static', filename='images/trash-icon.png') }}" alt="ícone de lixeira"></button>
     </form>
 </div>
 {% endfor %}
-
 {% endblock %}

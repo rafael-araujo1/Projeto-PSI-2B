@@ -103,16 +103,74 @@ def login():
     return render_template('login.html')
 
 # Rota para o painel do usuário (dashboard)
-@app.route('/dashboard')
+@app.route('/dashboard', methods=["GET"])
 @login_required
 def dashboard():
     users_id = int(session['users_id'])
     cur = mysql.connection.cursor()
 
     cur.execute("""
-        SELECT tas_id, tas_title, tas_description, tas_categoria, tas_status, tas_prioridade, tas_created_at, tas_data_limite from tb_task
+        SELECT tas_id, tas_title, tas_description, tas_categoria, tas_status, tas_prioridade, tas_data_inicial, tas_data_limite 
+        FROM tb_task 
         WHERE tas_use_id = %s
     """, (users_id,))
+    tasks = cur.fetchall()
+    cur.close()
+
+    # FILTRAGEM
+    filtros = []
+    parametros = [users_id]
+
+    # Status
+    status = request.args.get('status')
+    if status:
+        filtros.append("tas_status = %s")
+        parametros.append(status)
+
+    # Data de Criação
+    criadoI = request.args.get('criadoI')
+    criadoF = request.args.get('criadoF')
+    if criadoI and criadoF:
+        filtros.append("tas_data_inicial BETWEEN %s AND %s")
+        parametros.extend([criadoI, criadoF])
+    
+    # Data Limite (Prazo)
+    limiteI = request.args.get('limiteI')
+    limiteF = request.args.get('limiteF')
+    if limiteI and limiteF:
+        filtros.append("tas_data_limite BETWEEN %s AND %s")
+        parametros.extend([limiteI, limiteF])
+    
+    # Prioridade
+    prioridade = request.args.get('prioridade')
+    if prioridade:
+        filtros.append("tas_prioridade = %s")
+        parametros.append(prioridade)
+
+    # Categoria
+    categoria = request.args.get('categoria')
+    if categoria:
+        filtros.append("tas_categoria = %s")
+        parametros.append(categoria)
+
+    # Descrição (Palavras-chave)
+    descricao = request.args.get('descricao')
+    if descricao:
+        filtros.append("tas_description LIKE %s")
+        parametros.append(f"%{descricao}%")  # Usando o % para fazer a busca por substring
+
+    # Construção da consulta
+    consulta = """
+        SELECT tas_id, tas_title, tas_description, tas_categoria, tas_status, tas_prioridade, tas_data_inicial, tas_data_limite 
+        FROM tb_task 
+        WHERE tas_use_id = %s
+    """
+    
+    if filtros:
+        consulta += " AND " + " AND ".join(filtros)
+
+    cur = mysql.connection.cursor()
+    cur.execute(consulta, tuple(parametros))
     tasks = cur.fetchall()
     cur.close()
 
@@ -127,23 +185,25 @@ def add_task():
     if request.method == 'POST':
         title = request.form['title']
         description = request.form['description']
+        data_inicial = request.form["data-inicial"].replace("T", " ")
         data_limite = request.form["data-limite"].replace("T", " ")
         categoria = request.form['categoria']
         status = ''
         prioridade = request.form["prioridade"]
         users_id = session['users_id']
 
+        data_inicialAux = datetime.strptime(data_inicial, "%Y-%m-%d %H:%M")
         data_limiteAux = datetime.strptime(data_limite, "%Y-%m-%d %H:%M")
         
-        if data_limiteAux < datetime.now():
+        if data_limiteAux < data_inicialAux:
             status = "Pendente"
         else:
             status = "Em andamento"
 
         # Inserir a tarefa com a categoria selecionada
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO tb_task (tas_use_id, tas_title, tas_description, tas_data_limite, tas_categoria, tas_status, tas_prioridade) VALUES (%s, %s, %s, %s, %s, %s, %s)",
-                    (users_id, title, description, data_limite, categoria, status, prioridade))
+        cur.execute("INSERT INTO tb_task (tas_use_id, tas_title, tas_description, tas_data_inicial, tas_data_limite, tas_categoria, tas_status, tas_prioridade) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
+                    (users_id, title, description, data_inicial, data_limite, categoria, status, prioridade))
         mysql.connection.commit()
         cur.close()
 
@@ -164,6 +224,17 @@ def delete_task(task_id):
     cur.close()
 
     flash('Tarefa excluída com sucesso!', 'success')
+    return redirect(url_for('dashboard'))
+
+@app.route('/concluir_task/<int:task_id>', methods=['POST'])
+@login_required
+def concluir_task(task_id):
+    cur = mysql.connection.cursor()
+    cur.execute("UPDATE tb_task SET tas_status = 'Concluída' WHERE tas_id = %s AND tas_use_id = %s", (task_id, session['users_id']))
+    mysql.connection.commit()
+    cur.close()
+
+    flash('Tarefa concluída com sucesso!', 'success')
     return redirect(url_for('dashboard'))
 
 # Rota para logout

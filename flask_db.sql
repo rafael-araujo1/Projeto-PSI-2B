@@ -15,7 +15,7 @@ CREATE TABLE tb_task (
     tas_categoria ENUM("Trabalho", "Pessoal", "Estudo") NOT NULL,
     tas_status ENUM("Concluída", "Em andamento", "Pendente") NOT NULL,
     tas_prioridade ENUM("baixa", "média", "alta") NOT NULL,
-    tas_created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    tas_data_inicial DATETIME,
     tas_data_limite DATETIME,
     FOREIGN KEY (tas_use_id) REFERENCES tb_users(use_id) ON DELETE CASCADE
 );

@@ -17,3 +17,14 @@ if (flashMessage) {
         flashMessage.style.display = 'none';
     }, 3000);
 }
+
+document.getElementById('toggleFiltros').addEventListener('click', function() {
+    const formulario = document.getElementById('formFiltros');
+    if (formulario.style.display === 'none' || formulario.style.display === '') {
+        formulario.style.display = 'block'; // Exibe o formulário
+        this.textContent = 'Esconder Filtros'; // Altera o texto do botão
+    } else {
+        formulario.style.display = 'none'; // Esconde o formulário
+        this.textContent = 'Mostrar Filtros'; // Altera o texto do botão
+    }
+})
